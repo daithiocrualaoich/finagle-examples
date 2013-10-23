@@ -25,3 +25,9 @@ on using the generated files with Finagle.
 ## Versions
 The SBT and Scala versions are elderly, 0.12.4 and 2.9.2 respectively. These
 are the latest versions that work with the Scrooge SBT plugin.
+
+
+## IntelliJ Project Files
+Make project files for IntelliJ with:
+
+    ./sbt gen-idea
