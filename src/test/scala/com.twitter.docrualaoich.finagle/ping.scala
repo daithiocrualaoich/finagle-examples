@@ -4,7 +4,7 @@ import com.twitter.util._
 import org.scalatest.FlatSpec
 import com.twitter.docrualaoich.finagle.PingServer.PingServiceImpl
 import com.twitter.docrualaoich.finagle.thrift.PingService
-import com.twitter.finagle.builder.Server
+import com.twitter.finagle.ListeningServer
 
 class PingServiceTest extends FlatSpec {
 
@@ -20,7 +20,7 @@ class PingIntegrationTest extends FlatSpec {
 
   "A PingServer" should "serve pong to a thrift client" in {
     withAvailablePort { port =>
-      val server: Server = PingServer(port)
+      val server: ListeningServer = PingServer(port)
       val client: PingService.FinagledClient = PingClient("localhost:%d" format port)
 
       val response: String = Await.result(client.ping())

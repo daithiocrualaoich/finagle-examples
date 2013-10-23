@@ -1,11 +1,11 @@
 package com.twitter.docrualaoich.finagle
 
 import com.twitter.docrualaoich.finagle.thrift.PingService
-import com.twitter.finagle.builder.{ ClientBuilder, ServerBuilder, Server }
-import com.twitter.finagle.thrift.{ ThriftClientFramedCodec, ThriftServerFramedCodec }
-import com.twitter.util.{ Await, Future }
-import java.net.InetSocketAddress
+import com.twitter.finagle.builder.ClientBuilder
+import com.twitter.finagle.thrift.ThriftClientFramedCodec
+import com.twitter.util.Future
 import org.apache.thrift.protocol.TBinaryProtocol
+import com.twitter.finagle.{ ListeningServer, Thrift }
 
 object PingServer {
   class PingServiceImpl extends PingService.FutureIface {
@@ -14,11 +14,7 @@ object PingServer {
 
   val service = new PingService.FinagledService(new PingServiceImpl, new TBinaryProtocol.Factory())
 
-  def apply(port: Int): Server = ServerBuilder()
-    .bindTo(new InetSocketAddress(port))
-    .codec(ThriftServerFramedCodec())
-    .name("PingServer")
-    .build(service)
+  def apply(port: Int): ListeningServer = Thrift.serve(":%d" format port, service)
 }
 
 object PingClient {
